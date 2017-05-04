@@ -1,6 +1,6 @@
 {
   "name": "tf-output",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fetch terraform output",
   "main": "index.js",
   "bin": {
