@@ -6,7 +6,7 @@ const test = require('ava');
 const getPath = require('../lib/get-path');
 
 test('replaces the module name', t => {
-  const fooPath = getPath('foo', { path: 'terraform/{module}'} );
+  const fooPath = getPath('foo', { path: 'terraform/{dir}'} );
   t.deepEqual(fooPath, path.join(process.cwd(), 'terraform/foo'));
 });
 
@@ -17,6 +17,6 @@ test('throws when a substitution is missing', t => {
 });
 
 test('replaces other properties', t => {
-  const fooPath = getPath('baz', { path: 'terraform/{region}-{stage}/{module}', stage: 'stg', region: 'reg' } );
+  const fooPath = getPath('baz', { path: 'terraform/{region}-{stage}/{dir}', stage: 'stg', region: 'reg' } );
   t.deepEqual(fooPath, path.join(process.cwd(), 'terraform/reg-stg/baz'));
 });

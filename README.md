@@ -20,7 +20,7 @@ Assuming you have a module called *database.tf* with an output called `DATABASE_
 
 ### Examples
 ```bash
-tf-output -m database
+tf-output database
 ```
 
 Would print out something like:
@@ -30,7 +30,7 @@ Would print out something like:
 And:
 
 ```bash
-tf-output -m database -- node src/app.js
+tf-output database -- node src/app.js
 ```
 
 Would call `node src/app.js` with the `DATABASE_URL` available in the process environment.
@@ -38,15 +38,21 @@ Would call `node src/app.js` with the `DATABASE_URL` available in the process en
 You can also
 
 ```bash
-export $(tf-output -m database)
+export $(tf-output database)
 ```
 Which will populate outputs in to your current shell.
 
 ## Configuration
 
-### Modules
+### Module
 
-`-m` or `--modules` specifies which modules to obtain output from, and can have multiple values simply by specifying a space: `-m data api`
+`-m` or `--module` specifies which module to obtain output from. `-m` alone uses the `dir` name as the value. So
+
+```bash
+tf-output api -m
+```
+
+calls `terraform output -m api` in `terraform/api`
 
 ### Output Format
 
@@ -56,7 +62,7 @@ Which will populate outputs in to your current shell.
 
 ### Path Template
 
-`-p` or `-path` specifies a *path template*. tf-output looks for modules according to a path template, which by default is `terraform/{module}` - so `tf-output -m api database` would look for a module in two directories:
+`-p` or `-path` specifies a *path template*. tf-output looks for modules according to a path template, which by default is `terraform/{dir}` - so `tf-output api database` would look for a module in two directories:
 
 - terraform/database
 - terraform/api
@@ -67,13 +73,13 @@ You can use more complex path templates. Imagine you deploy your app using the f
 
 You might organize your terraform definitions in a number of ways and you can customize where tf-output looks to suit your needs.
 
-`tf-output -m database -p {stage}/{region}/terraform/{module}`
+`tf-output database -p {stage}/{region}/terraform/{dir}`
 
 This command would fail, because while it knows the module you are trying to load, it doesn't know what `stage` and `region` should be.
 
 You can specify them:
 
-`tf-output -m database api -p {stage}/{region}/terraform/{module} --stage=dev --region=us-east-1`
+`tf-output database api -p {stage}/{region}/terraform/{dir} --stage=dev --region=us-east-1`
 
 This would cause tf-output to load modules from:
 
@@ -82,6 +88,6 @@ This would cause tf-output to load modules from:
 
 If you run a command through tf-output, it will *look ahead* for substitution values. This works the same:
 
-`tf-output -m database api -p {stage}/{region}/terraform/{module} -- deploy --stage=dev --region=us-east-1`
+`tf-output database api -p {stage}/{region}/terraform/{dir} -- deploy --stage=dev --region=us-east-1`
 
 Except instead of printing the outputs out to stdout, it would exec `deploy --stage=dev --region=us-east-1` with environment variables set, and the path template would still be substituted wtih the right stage and region. This saves you havin to repeat region, stage, etc.

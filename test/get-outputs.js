@@ -29,7 +29,7 @@ test('returns a promise', t => {
   });
 
   const outputs = getOutputs({
-    modules: ['foo', 'bar']
+    _: ['foo', 'bar']
   });
 
   t.true(outputs instanceof Promise);
@@ -77,7 +77,7 @@ test('parses terraform stdout to fetch values', t => {
     }
   });
 
-  return getOutputs({ modules: ['foo', 'bar'] })
+  return getOutputs({ _: ['foo', 'bar'] })
     .then(outputs => {
       t.deepEqual(outputs, { foo: "bar", bar: "baz" });
     });
@@ -111,13 +111,13 @@ test('rejects when exec returns non-zero', t => {
   });
 
   return getOutputs({
-    modules: ['foo', 'bar']
+    _: ['foo', 'bar']
   })
   .then(() => {
     t.fail()
   })
   .catch(e => {
-    t.true(e.message === `'terraform output' returned a non-zero status code for the 'foo' module`);
+    t.true(e.message === `'terraform output' returned a non-zero status code in foo/bar`);
   });
 });
 
@@ -153,7 +153,7 @@ test('rejects with a ValidatoinError when path does not exist', t => {
   });
 
   return getOutputs({
-    modules: ['foo', 'bar']
+    _: ['foo', 'bar']
   })
   .then(() => {
     t.fail()

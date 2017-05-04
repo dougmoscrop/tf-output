@@ -5,36 +5,36 @@ const test = require('ava');
 const getOptions = require('../lib/get-options');
 
 test('defaults', t => {
-  const options = getOptions(['-m', 'foo', 'bar']);
-  t.deepEqual(options.modules, ['foo', 'bar']);
+  const options = getOptions(['foo', 'bar']);
+  t.deepEqual(options._, ['foo', 'bar']);
   t.deepEqual(options.format, 'env');
-  t.deepEqual(options.path, 'terraform/{module}');
+  t.deepEqual(options.path, 'terraform/{dir}');
 });
 
 test('custom format', t => {
-  const options = getOptions(['-m', 'foo', '-f', 'json']);
-  t.deepEqual(options.modules, ['foo']);
+  const options = getOptions(['foo', '-f', 'json']);
+  t.deepEqual(options._, ['foo']);
   t.deepEqual(options.format, 'json');
-  t.deepEqual(options.path, 'terraform/{module}');
+  t.deepEqual(options.path, 'terraform/{dir}');
 });
 
 test('custom path', t => {
-  const options = getOptions(['-m', 'foo', '-p', 'anything/{module}/{other}']);
-  t.deepEqual(options.modules, ['foo']);
+  const options = getOptions(['foo', '-p', 'anything/{dir}/{other}']);
+  t.deepEqual(options._, ['foo']);
   t.deepEqual(options.format, 'env');
-  t.deepEqual(options.path, 'anything/{module}/{other}');
+  t.deepEqual(options.path, 'anything/{dir}/{other}');
 });
 
 test('command', t => {
-  const options = getOptions(['-m', 'foo', '--', 'deploy']);
-  t.deepEqual(options.modules, ['foo']);
+  const options = getOptions(['foo', '--', 'deploy']);
+  t.deepEqual(options._, ['foo']);
   t.deepEqual(options.command, {});
   t.deepEqual(options.commandArgv, ['deploy']);
 });
 
 test('command with options', t => {
-  const options = getOptions(['-m', 'foo', '--', 'deploy', '--stage', 'dev']);
-  t.deepEqual(options.modules, ['foo']);
+  const options = getOptions(['foo', '--', 'deploy', '--stage', 'dev']);
+  t.deepEqual(options._, ['foo']);
   t.deepEqual(options.command, { stage: 'dev' });
   t.deepEqual(options.commandArgv, ['deploy', '--stage', 'dev']);
 });
