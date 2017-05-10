@@ -18,6 +18,12 @@ test('custom format', t => {
   t.deepEqual(options.path, 'terraform/{dir}');
 });
 
+test('auto', t => {
+  const options = getOptions(['-auto']);
+  t.deepEqual(options.auto, true);
+  t.deepEqual(options.path, 'terraform/{dir}');
+});
+
 test('custom path', t => {
   const options = getOptions(['foo', '-p', 'anything/{dir}/{other}']);
   t.deepEqual(options._, ['foo']);
