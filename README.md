@@ -58,6 +58,10 @@ calls `terraform output -m api` in `terraform/api`
 
 `-f` or `--format` allows you to specify an alternate output format, currently `json` is supported. This flag is ignored if a command is specified.
 
+### Backend Initialization
+
+`-a` or `--auto` allows you to auto-initialize terraform (`terraform init`) prior to copying outputs.
+
 ## Advanced Configuration
 
 ### Path Template
