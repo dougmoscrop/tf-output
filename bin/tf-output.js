@@ -3,6 +3,7 @@
 'use strict';
 
 const getOptions = require('../lib/get-options');
+const init = require('../lib/auto-init');
 const getOutputs = require('../lib/get-outputs');
 const runCommand = require('../lib/run-command');
 const printOutputs = require('../lib/print-outputs');
@@ -11,7 +12,8 @@ const printError = require('../lib/print-error');
 const args = process.argv.slice(2);
 const options = getOptions(args);
 
-getOutputs(options)
+init(options)
+  .then(() => getOutputs(options))
   .then(outputs => {
     if (options.commandArgv && options.commandArgv.length) {
       return runCommand(options.commandArgv, outputs);
