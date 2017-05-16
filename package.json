@@ -28,10 +28,10 @@
   "homepage": "https://github.com/dougmoscrop/tf-output#readme",
   "devDependencies": {
     "ava": "^0.19.1",
-    "coveralls": "2.11.14",
-    "eslint": "3.7.1",
-    "nyc": "^10.3.0",
-    "proxyquire": "^1.7.11",
+    "coveralls": "2.13.1",
+    "eslint": "3.19.0",
+    "nyc": "^10.3.2",
+    "proxyquire": "^1.8.0",
     "sinon": "^2.2.0",
     "update-contributors": "^0.3.1"
   },
