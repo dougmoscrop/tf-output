@@ -1,6 +1,6 @@
 {
   "name": "tf-output",
-  "version": "1.1.0",
+  "version": "1.0.0",
   "description": "Fetch terraform output",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,9 @@
   "scripts": {
     "test": "nyc --all ava",
     "posttest": "eslint .",
-    "coverage": "nyc report --reporter=lcov"
+    "coverage": "nyc report --reporter=lcov",
+    "preversion": "update-contrib",
+    "postpublish": "git push --tags"
   },
   "author": "Doug Moscrop",
   "license": "MIT",
@@ -30,7 +32,8 @@
     "eslint": "3.7.1",
     "nyc": "^10.3.0",
     "proxyquire": "^1.7.11",
-    "sinon": "^2.2.0"
+    "sinon": "^2.2.0",
+    "update-contributors": "^0.3.1"
   },
   "dependencies": {
     "yargs": "7.1.0"
