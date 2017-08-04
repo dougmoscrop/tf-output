@@ -6,11 +6,11 @@ const sinon = require('sinon');
 
 const ValidationError = require('../lib/validation-error');
 
-test('resolves right away when auto = false', t => {
+test('resolves right away when auto=false && allow-unapplied-plan=true', t => {
   const autoInit = proxyquire('../lib/auto-init', {
-    './get-path': () => t.fail(),
+    './get-path': () => 'foo/bar',
     'fs': {
-      statSync: () => t.fail(),
+      statSync: Function.prototype,
     },
     child_process: {
       spawn: () => t.fail()
@@ -18,7 +18,8 @@ test('resolves right away when auto = false', t => {
   });
 
   return autoInit({
-    _: ['foo', 'bar']
+    _: ['foo', 'bar'],
+    'allow-unapplied-plan': true
   })
   .then(() => {
     t.pass();
@@ -103,11 +104,11 @@ test('rejects when exec returns non-zero', t => {
     t.fail()
   })
   .catch(e => {
-    t.true(e.message === `'terraform init' returned a non-zero status code in foo/bar`);
+    t.true(e.message === `'terraform init -no-color -input=false -get=false' returned a non-zero status code in foo/bar`);
   });
 });
 
-test('rejects with a ValidatoinError when path does not exist', t => {
+test('rejects with a ValidationError when path does not exist', t => {
   const on = sinon.stub();
 
   on.returns()
