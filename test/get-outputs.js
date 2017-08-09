@@ -4,161 +4,102 @@ const proxyquire = require('proxyquire');
 const test = require('ava');
 const sinon = require('sinon');
 
-const ValidationError = require('../lib/validation-error');
-
 test('returns a promise', t => {
-  const emitter = {
-    on: Function.prototype,
-    setEncoding: Function.prototype
-  };
-
   const getOutputs = proxyquire('../lib/get-outputs', {
-    './get-path': () => 'foo/bar',
-    'fs': {
-      statSync: Function.prototype,
-    },
-    child_process: {
-      spawn: () => {
-        return {
-          on: Function.prototype,
-          stdout: emitter,
-          stderr: emitter
-        };
-      }
-    }
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': () => Promise.resolve()
   });
 
-  const outputs = getOutputs({
+  const outputs = getOutputs('dir', {
     _: ['foo', 'bar']
   });
 
   t.true(outputs instanceof Promise);
 });
 
-test('parses terraform stdout to fetch values', t => {
-  const on = sinon.stub();
-
-  on.returns()
-  on.withArgs('exit', sinon.match.any).yields(0);
-
-  const stdoutOn = sinon.stub();
-
-  stdoutOn.withArgs('data', sinon.match.any).onCall(0).callsFake((e, callback) => {
-    callback('{');
-    callback('"foo":{"value":"bar"}');
-    callback('}');
-  });
-
-  stdoutOn.withArgs('data', sinon.match.any).onCall(1).callsFake((e, callback) => {
-    callback('{');
-    callback('"bar":{"value":"baz"}');
-    callback('}');
-  });
+test('calls runTerraform', t => {
+  const runTerraform = sinon.stub().resolves();
 
   const getOutputs = proxyquire('../lib/get-outputs', {
-    './get-path': () => 'foo/bar',
-    'fs': {
-      statSync: Function.prototype,
-    },
-    child_process: {
-      spawn: () => {
-        return {
-          on,
-          stdout: {
-            setEncoding: Function.prototype,
-            on: stdoutOn
-          },
-          stderr: {
-            on: Function.prototype,
-            setEncoding: Function.prototype
-          }
-        };
-      }
-    }
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
   });
 
-  return getOutputs({ _: ['foo', 'bar'] })
-    .then(outputs => {
-      t.deepEqual(outputs, { foo: "bar", bar: "baz" });
-    });
-});
-
-test('rejects when exec returns non-zero', t => {
-  const on = sinon.stub();
-
-  on.returns()
-  on.withArgs('exit', sinon.match.any).yields(1);
-
-  const emitter = {
-    on: Function.prototype,
-    setEncoding: Function.prototype
-  };
-
-  const getOutputs = proxyquire('../lib/get-outputs', {
-    './get-path': () => 'foo/bar',
-    'fs': {
-      statSync: Function.prototype,
-    },
-    child_process: {
-      spawn: () => {
-        return {
-          on,
-          stdout: emitter,
-          stderr: emitter
-        };
-      }
-    }
-  });
-
-  return getOutputs({
+  return getOutputs('dir', {
     _: ['foo', 'bar']
   })
   .then(() => {
-    t.fail()
-  })
-  .catch(e => {
-    t.true(e.message === `'terraform output' returned a non-zero status code in foo/bar`);
+    t.true(runTerraform.calledOnce);
   });
 });
 
-test('rejects with a ValidatoinError when path does not exist', t => {
-  const on = sinon.stub();
-
-  on.returns()
-  on.withArgs('exit', sinon.match.any).yields(0);
-
-  const emitter = {
-    on: Function.prototype,
-    setEncoding: Function.prototype
-  };
+test('calls runTerraform for auto init', t => {
+  const runTerraform = sinon.stub().onCall(0).resolves().onCall(1).resolves();
 
   const getOutputs = proxyquire('../lib/get-outputs', {
-    './get-path': () => 'foo/bar',
-    'fs': {
-      statSync: () => {
-        const err = new Error();
-        err.code = 'ENOENT'
-        throw err;
-      }
-    },
-    child_process: {
-      spawn: () => {
-        return {
-          on,
-          stdout: emitter,
-          stderr: emitter
-        };
-      }
-    }
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
   });
 
-  return getOutputs({
-    _: ['foo', 'bar']
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    ['auto-init']: true
   })
   .then(() => {
-    t.fail()
+    t.true(runTerraform.calledTwice);
+  });
+});
+
+test('calls runTerraform for check plan', t => {
+  const runTerraform = sinon.stub().onCall(0).resolves().onCall(1).resolves();
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    ['check-plan']: true
   })
-  .catch(e => {
-    t.true(e instanceof ValidationError);
+  .then(() => {
+    t.true(runTerraform.calledTwice);
+  });
+});
+
+test('calls runTerraform for auto-init and check plan', t => {
+  const runTerraform = sinon.stub()
+    .onCall(0).resolves()
+    .onCall(1).resolves()
+    .onCall(2).resolves();
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    ['auto-init']: true,
+    ['check-plan']: true,
+  })
+  .then(() => {
+    t.true(runTerraform.calledThrice);
+  });
+});
+
+test('parses terraform output', t => {
+  const runTerraform = sinon.stub().resolves({ output: '{"test":{"value":1}}' });
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar']
+  })
+  .then(result => {
+    t.true(result.test === 1);
   });
 });

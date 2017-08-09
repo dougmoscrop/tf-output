@@ -18,9 +18,9 @@ test('custom format', t => {
   t.deepEqual(options.path, 'terraform/{dir}');
 });
 
-test('auto', t => {
-  const options = getOptions(['-auto']);
-  t.deepEqual(options.auto, true);
+test('autoInit', t => {
+  const options = getOptions(['--auto-init']);
+  t.deepEqual(options.autoInit, true);
   t.deepEqual(options.path, 'terraform/{dir}');
 });
 

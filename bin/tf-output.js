@@ -3,17 +3,16 @@
 'use strict';
 
 const getOptions = require('../lib/get-options');
-const init = require('../lib/auto-init');
 const getOutputs = require('../lib/get-outputs');
 const runCommand = require('../lib/run-command');
-const printOutputs = require('../lib/print-outputs');
 const printError = require('../lib/print-error');
+const printOutputs = require('../lib/print-outputs');
 
 const args = process.argv.slice(2);
 const options = getOptions(args);
 
-init(options)
-  .then(() => getOutputs(options))
+Promise.all(options._.map(dir => getOutputs(dir, options)))
+  .then(results => Object.assign({}, ...results))
   .then(outputs => {
     if (options.commandArgv && options.commandArgv.length) {
       return runCommand(options.commandArgv, outputs);
