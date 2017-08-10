@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/dougmoscrop/tf-output.svg?branch=master)](https://travis-ci.org/dougmoscrop/tf-output)
-[![Coverage Status](https://coveralls.io/repos/github/dougmoscrop/tf-output/badge.svg)](https://coveralls.io/github/dougmoscrop/tf-output)
+[![Coverage Status](https://coveralls.io/repos/github/dougmoscrop/tf-output/badge.svg?branch=master)](https://coveralls.io/github/dougmoscrop/tf-output?branch=master)
 
 # tf-output
 
