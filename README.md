@@ -60,7 +60,7 @@ calls `terraform output -m api` in `terraform/api`
 
 ### Backend Initialization
 
-`-a` or `--auto` allows you to auto-initialize terraform (`terraform init`) prior to copying outputs.
+`-a` or `--auto-init` allows you to auto-initialize terraform (`terraform init`) prior to copying outputs.
 
 ## Advanced Configuration
 
