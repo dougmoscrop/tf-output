@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dougmoscrop/tf-output.svg?branch=master)](https://travis-ci.org/dougmoscrop/tf-output)
+
 # tf-output
 
 Fetches terraform outputs and lets you:
