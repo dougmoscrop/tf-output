@@ -62,7 +62,13 @@ calls `terraform output -m api` in `terraform/api`
 
 `-a` or `--auto-init` allows you to auto-initialize terraform (`terraform init`) prior to copying outputs.
 
+`-g` or `--auto-init-get` will pull down modules mentioned in the root module during auto-initialization.
+
 ## Advanced Configuration
+
+### Plan Check
+
+`-c` or `--check-plan` checks if terraform plan has any unapplied changes (and aborts if it does).
 
 ### Path Template
 

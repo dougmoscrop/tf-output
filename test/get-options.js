@@ -24,6 +24,22 @@ test('autoInit', t => {
   t.deepEqual(options.path, 'terraform/{dir}');
 });
 
+test('autoInitGet', t => {
+  const options = getOptions(['--auto-init-get', '-auto-init']);
+  t.deepEqual(options.autoInit, true);
+  t.deepEqual(options.autoInitGet, true);
+  t.deepEqual(options.path, 'terraform/{dir}');
+});
+
+test('autoInitGet requires autoInit', t => {
+  try {
+    getOptions(['--auto-init-get']);
+    t.fail();
+  } catch(e) {
+    t.true(e.message === 'Implications failed:\n  auto-init-get -> auto-init');
+  }
+});
+
 test('custom path', t => {
   const options = getOptions(['foo', '-p', 'anything/{dir}/{other}']);
   t.deepEqual(options._, ['foo']);
