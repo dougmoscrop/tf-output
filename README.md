@@ -103,4 +103,19 @@ If you run a command through tf-output, it will *look ahead* for substitution va
 
 `tf-output database api -p {stage}/{region}/terraform/{dir} -- deploy --stage=dev --region=us-east-1`
 
-Except instead of printing the outputs out to stdout, it would exec `deploy --stage=dev --region=us-east-1` with environment variables set, and the path template would still be substituted wtih the right stage and region. This saves you havin to repeat region, stage, etc.
+Except instead of printing the outputs out to stdout, it would exec `deploy --stage=dev --region=us-east-1` with environment variables set, and the path template would still be substituted with the right stage and region. This saves you havin to repeat region, stage, etc.
+
+## .tfoutput
+
+In many cases the arguments you will specify to `tf-output` are always going to be the same, for example the `-p` path template argument. You can put these in a .tfoutput file which will be read on every execution.
+
+Example `.tfoutput` file:
+
+```json
+{
+	"path": "terraform/{dir}/{stage}/{region}",
+	"module": true,
+	"auto-init": true,
+	"auto-init-get": true
+}
+```
