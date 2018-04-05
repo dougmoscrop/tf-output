@@ -22,5 +22,5 @@ Promise.all(options._.map(dir => getOutputs(dir, options)))
   })
   .catch(e => {
     process.exitCode = 1;
-    printError(e);
+    printError(e, options);
   });
