@@ -1,6 +1,6 @@
 {
   "name": "tf-output",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Fetch terraform output",
   "main": "index.js",
   "bin": {
@@ -45,8 +45,7 @@
     ]
   },
   "contributors": [
-    "Doug Moscrop <doug.moscrop@gmail.com> (https://github.com/dougmoscrop)",
-    "Alex Murashkin (https://github.com/alex-murashkin)",
+    "Doug Moscrop (https://github.com/dougmoscrop)",
     "Jim Walkoski (https://github.com/JimD2L)"
   ]
 }
