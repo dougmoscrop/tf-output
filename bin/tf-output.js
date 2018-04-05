@@ -15,7 +15,7 @@ if (options === false) {
   return;
 }
 
-Promise.all(options._.map(dir => getOutputs(dir, options)))
+Promise.all(options.dirs.map(dir => getOutputs(dir, options)))
   .then(results => Object.assign({}, ...results))
   .then(outputs => {
     if (options.commandArgv && options.commandArgv.length) {
