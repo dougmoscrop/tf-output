@@ -19,13 +19,13 @@ test('custom format', t => {
 });
 
 test('autoInit', t => {
-  const options = getOptions(['--auto-init']);
+  const options = getOptions(['dir', '--auto-init']);
   t.deepEqual(options.autoInit, true);
   t.deepEqual(options.path, 'terraform/{dir}');
 });
 
 test('autoInitGet', t => {
-  const options = getOptions(['--auto-init-get', '-auto-init']);
+  const options = getOptions(['dir', '--auto-init-get', '-auto-init']);
   t.deepEqual(options.autoInit, true);
   t.deepEqual(options.autoInitGet, true);
   t.deepEqual(options.path, 'terraform/{dir}');
@@ -33,7 +33,7 @@ test('autoInitGet', t => {
 
 test('autoInitGet requires autoInit', t => {
   try {
-    getOptions(['--auto-init-get']);
+    getOptions(['dir', '--auto-init-get']);
     t.fail();
   } catch(e) {
     t.true(e.message === 'Implications failed:\n  auto-init-get -> auto-init');
@@ -45,6 +45,21 @@ test('custom path', t => {
   t.deepEqual(options._, ['foo']);
   t.deepEqual(options.format, 'env');
   t.deepEqual(options.path, 'anything/{dir}/{other}');
+});
+
+test('returns false when missing dirs', t => {
+  const options = getOptions(['-m', '-a']);
+  t.deepEqual(options, false);
+});
+
+test('supports --dirs', t => {
+  const options = getOptions(['--dirs', 'xyz', '-p', 'anything/{dir}/{other}']);
+  t.deepEqual(options.dirs, ['xyz']);
+});
+
+test('supports dirs from cmd', t => {
+  const options = getOptions(['xyz', '-p', 'anything/{dir}/{other}']);
+  t.deepEqual(options.dirs, ['xyz']);
 });
 
 test('command', t => {
