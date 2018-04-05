@@ -25,7 +25,7 @@ test('autoInit', t => {
 });
 
 test('autoInitGet', t => {
-  const options = getOptions(['dir', '--auto-init-get', '-auto-init']);
+  const options = getOptions(['dir', '--auto-init-get', '--auto-init']);
   t.deepEqual(options.autoInit, true);
   t.deepEqual(options.autoInitGet, true);
   t.deepEqual(options.path, 'terraform/{dir}');
