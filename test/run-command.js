@@ -60,7 +60,8 @@ test('rejects when command returns non-zero', t => {
     .then(() => {
       t.fail()
     })
-    .catch(() => {
+    .catch(err => {
       t.true(on.withArgs('exit', sinon.match.any).calledOnce);
+      t.deepEqual(err.message, 'a exited with non-zero status code');
     });
 });
