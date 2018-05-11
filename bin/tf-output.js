@@ -12,6 +12,7 @@ const args = process.argv.slice(2);
 const options = getOptions(args);
 
 if (options === false) {
+  process.exitCode = 2;
   return;
 }
 
