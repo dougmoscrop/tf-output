@@ -6,6 +6,3 @@ env:
 
 extends:
     "eslint:recommended"
-
-ecmaFeatures:
-    generators: true
