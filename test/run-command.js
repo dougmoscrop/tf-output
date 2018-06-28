@@ -62,6 +62,33 @@ test('rejects when command returns non-zero', t => {
     })
     .catch(err => {
       t.true(on.withArgs('exit', sinon.match.any).calledOnce);
-      t.deepEqual(err.message, 'a exited with non-zero status code');
+      t.deepEqual(err.message, 'a --b c exited with non-zero status code');
+    });
+});
+
+
+test('handles quotes', t => {
+  const on = sinon.stub();
+
+  on.returns();
+  on.withArgs('exit', sinon.match.any).yields();
+
+  const runCommand = proxyquire('../lib/run-command', {
+    child_process: {
+      spawn: () => {
+        return {
+          on
+        };
+      }
+    }
+  });
+
+  return runCommand(['a', '--b', 'c d'])
+    .then(() => {
+      t.fail()
+    })
+    .catch(err => {
+      t.true(on.withArgs('exit', sinon.match.any).calledOnce);
+      t.deepEqual(err.message, `a --b 'c d' exited with non-zero status code`);
     });
 });
