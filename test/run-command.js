@@ -89,6 +89,6 @@ test('handles quotes', t => {
     })
     .catch(err => {
       t.true(on.withArgs('exit', sinon.match.any).calledOnce);
-      t.deepEqual(err.message, `a --b 'c d' exited with non-zero status code`);
+      t.deepEqual(err.message, `a --b c d exited with non-zero status code`);
     });
 });
