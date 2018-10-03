@@ -40,6 +40,22 @@ test('autoInitGet requires autoInit', t => {
   }
 });
 
+test('initOpts', t => {
+  const options = getOptions(['dir', '--auto-init', '--init-opts=-backend-config=foo']);
+  t.deepEqual(options.autoInit, true);
+  t.deepEqual(options.initOpts, '-backend-config=foo');
+  t.deepEqual(options.path, 'terraform/{dir}');
+});
+
+test('initOpts requires autoInit', t => {
+  try {
+    getOptions(['dir', '--init-opts=-backend-config=foo']);
+    t.fail();
+  } catch(e) {
+    t.true(e.message === 'Implications failed:\n  init-opts -> auto-init');
+  }
+});
+
 test('custom path', t => {
   const options = getOptions(['foo', '-p', 'anything/{dir}/{other}']);
   t.deepEqual(options._, ['foo']);
