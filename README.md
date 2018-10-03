@@ -67,6 +67,8 @@ calls `terraform output -m api` in `terraform/api`
 
 `-g` or `--auto-init-get` will pull down modules mentioned in the root module during auto-initialization.
 
+`-i` or `--init-opts` allows you to pass additional options to `terraform init` (e.g. `-backend-config`)
+
 ## Advanced Configuration
 
 ### Plan Check

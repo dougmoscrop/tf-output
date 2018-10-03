@@ -47,6 +47,27 @@ test('calls runTerraform for auto init', t => {
   })
   .then(() => {
     t.true(runTerraform.calledTwice);
+    t.deepEqual(runTerraform.firstCall.args[1], ['init', '-no-color', '-input=false', '-get=undefined']);
+  });
+});
+
+test('calls runTerraform for auto init with init-opts', t => {
+  const runTerraform = sinon.stub().onCall(0).resolves().onCall(1).resolves();
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    ['auto-init']: true,
+    ['init-opts']: '-backend-config=/env/{stage} -reconfigure',
+    ['stage']: 'foo'
+  })
+  .then(() => {
+    t.true(runTerraform.calledTwice);
+    t.deepEqual(runTerraform.firstCall.args[1], ['init', '-no-color', '-input=false', '-get=undefined', '-backend-config=/env/foo', '-reconfigure']);
   });
 });
 
