@@ -85,6 +85,27 @@ test('calls runTerraform for check plan', t => {
   })
   .then(() => {
     t.true(runTerraform.calledTwice);
+    t.deepEqual(runTerraform.firstCall.args[1], ['plan', '-no-color', '-detailed-exitcode']);
+  });
+});
+
+test('calls runTerraform for check plan with plan-opts', t => {
+  const runTerraform = sinon.stub().onCall(0).resolves().onCall(1).resolves();
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    ['check-plan']: true,
+    ['plan-opts']: '-var-file=/env/{stage} -refresh=true',
+    ['stage']: 'foo'
+  })
+  .then(() => {
+    t.true(runTerraform.calledTwice);
+    t.deepEqual(runTerraform.firstCall.args[1], ['plan', '-no-color', '-detailed-exitcode', '-var-file=/env/foo', '-refresh=true']);
   });
 });
 
