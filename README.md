@@ -67,13 +67,15 @@ calls `terraform output -m api` in `terraform/api`
 
 `-g` or `--auto-init-get` will pull down modules mentioned in the root module during auto-initialization.
 
-`-i` or `--init-opts` allows you to pass additional options to `terraform init` (e.g. `-backend-config`)
+`-i` or `--init-opts` allows you to pass additional options to `terraform init` (e.g. `-backend-config`).
 
 ## Advanced Configuration
 
 ### Plan Check
 
 `-c` or `--check-plan` checks if terraform plan has any unapplied changes (and aborts if it does).
+
+`-o` or `--plan-opts` allows you to pass additional options to `terraform plan` (e.g. `-var-file`).
 
 ### Path Template
 

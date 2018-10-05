@@ -56,6 +56,22 @@ test('initOpts requires autoInit', t => {
   }
 });
 
+test('planOpts', t => {
+  const options = getOptions(['dir', '--check-plan', '--plan-opts=-var-file=foo']);
+  t.deepEqual(options.checkPlan, true);
+  t.deepEqual(options.planOpts, '-var-file=foo');
+  t.deepEqual(options.path, 'terraform/{dir}');
+});
+
+test('planOpts requires autoInit', t => {
+  try {
+    getOptions(['dir', '--plan-opts=-var-file=foo']);
+    t.fail();
+  } catch(e) {
+    t.true(e.message === 'Implications failed:\n  plan-opts -> check-plan');
+  }
+});
+
 test('custom path', t => {
   const options = getOptions(['foo', '-p', 'anything/{dir}/{other}']);
   t.deepEqual(options._, ['foo']);
