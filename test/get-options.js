@@ -36,7 +36,7 @@ test('autoInitGet requires autoInit', t => {
     getOptions(['dir', '--auto-init-get']);
     t.fail();
   } catch(e) {
-    t.true(e.message === 'Implications failed:\n  auto-init-get -> auto-init');
+    t.true(e.message === 'Missing dependent arguments:\n auto-init-get -> auto-init');
   }
 });
 
@@ -52,7 +52,7 @@ test('initOpts requires autoInit', t => {
     getOptions(['dir', '--init-opts=-backend-config=foo']);
     t.fail();
   } catch(e) {
-    t.true(e.message === 'Implications failed:\n  init-opts -> auto-init');
+    t.true(e.message === 'Missing dependent arguments:\n init-opts -> auto-init');
   }
 });
 
@@ -68,7 +68,7 @@ test('planOpts requires autoInit', t => {
     getOptions(['dir', '--plan-opts=-var-file=foo']);
     t.fail();
   } catch(e) {
-    t.true(e.message === 'Implications failed:\n  plan-opts -> check-plan');
+    t.true(e.message === 'Missing dependent arguments:\n plan-opts -> check-plan');
   }
 });
 
