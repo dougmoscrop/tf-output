@@ -27,17 +27,17 @@
   },
   "homepage": "https://github.com/dougmoscrop/tf-output#readme",
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^2.4.0",
     "coveralls": "^3.0.1",
-    "eslint": "^4.19.1",
-    "nyc": "^11.8.0",
+    "eslint": "^6.7.2",
+    "nyc": "^14.1.1",
     "proxyquire": "^2.0.1",
-    "sinon": "^5.0.7",
+    "sinon": "^7.5.0",
     "update-contributors": "^0.3.1"
   },
   "dependencies": {
     "shell-quote": "^1.6.1",
-    "yargs": "8.0.1"
+    "yargs": "^15.0.2"
   },
   "nyc": {
     "exclude": [
@@ -49,5 +49,8 @@
     "",
     "",
     ""
-  ]
+  ],
+  "engines": {
+    "node": ">=8.0.0"
+  }
 }
