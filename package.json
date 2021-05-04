@@ -1,6 +1,6 @@
 {
   "name": "tf-output",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Fetch terraform output",
   "main": "index.js",
   "bin": {
@@ -46,9 +46,10 @@
     ]
   },
   "contributors": [
-    "",
-    "",
-    ""
+    "Doug Moscrop <doug.moscrop@gmail.com> (https://github.com/dougmoscrop)",
+    "Anthony Wikkerink <awikkeri@gmail.com> (https://github.com/awikkerink)",
+    "Anton Bazhal (https://github.com/AntonBazhal)",
+    "Jim Walkoski (https://github.com/JimD2L)"
   ],
   "engines": {
     "node": ">=8.0.0"
