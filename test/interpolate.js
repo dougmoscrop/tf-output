@@ -26,7 +26,7 @@ test('rejects when a substitution is missing', t => {
 
   t.throws(
     () => interpolate(options.path, options, { dir: 'bar' }),
-    `"terraform/{module}/{missing}" references missing value 'missing'`
+    { message: `"terraform/{module}/{missing}" references missing value 'missing'` }
   );
 });
 
