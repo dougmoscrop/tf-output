@@ -145,3 +145,41 @@ test('parses terraform output', t => {
     t.true(result.test === 1);
   });
 });
+
+test('does not flatten object values when flatten option is false', t => {
+  const runTerraform = sinon.stub().resolves({ output: '{"test":{"value":{"foo":"bar"}}}' });
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    flatten: false
+  })
+  .then(result => {
+    t.deepEqual(result.test, {
+      foo: 'bar'
+    });
+  });
+});
+
+test('flattens object values when flatten option is true', t => {
+  const runTerraform = sinon.stub().resolves({ output: '{"test":{"value":{"foo":{"bar": "baz"}}}}' });
+
+  const getOutputs = proxyquire('../lib/get-outputs', {
+    './get-cwd': () => Promise.resolve('foo/bar'),
+    './run-terraform': runTerraform
+  });
+
+  return getOutputs('dir', {
+    _: ['foo', 'bar'],
+    flatten: true,
+    'flatten-delimiter': '-'
+  })
+  .then(result => {
+    t.is(result.test, undefined);
+    t.true(result['test-foo-bar'] === 'baz');
+  });
+});

@@ -107,3 +107,13 @@ test('command with options', t => {
   t.deepEqual(options.command, { stage: 'dev' });
   t.deepEqual(options.commandArgv, ['deploy', '--stage', 'dev']);
 });
+
+test('flatten', t => {
+  const options = getOptions(['foo', '--flatten']);
+  t.deepEqual(options.flatten, true);
+});
+
+test('flattenDelimiter', t => {
+  const options = getOptions(['foo', '--flatten-delimiter', '"-"']);
+  t.deepEqual(options.flattenDelimiter, '-');
+});

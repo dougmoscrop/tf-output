@@ -69,6 +69,12 @@ calls `terraform output -m api` in `terraform/api`
 
 `-i` or `--init-opts` allows you to pass additional options to `terraform init` (e.g. `-backend-config`).
 
+### Output Flattening
+
+`-fl` or `--flatten` will flatten output values that are objects by concatenating key names.
+
+`-fd` or `--flatten-delimiter` allows you to specify the delimiter to use while concatenating key names (`_` by default).
+
 ## Advanced Configuration
 
 ### Plan Check
