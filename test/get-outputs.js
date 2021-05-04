@@ -166,7 +166,7 @@ test('does not flatten object values when flatten option is false', t => {
 });
 
 test('flattens object values when flatten option is true', t => {
-  const runTerraform = sinon.stub().resolves({ output: '{"test":{"value":{"foo":{"bar": "baz"}}}}' });
+  const runTerraform = sinon.stub().resolves({ output: '{"test":{"value":{"foo":{"bar": "baz", "bazz": null}}}}' });
 
   const getOutputs = proxyquire('../lib/get-outputs', {
     './get-cwd': () => Promise.resolve('foo/bar'),
@@ -181,5 +181,6 @@ test('flattens object values when flatten option is true', t => {
   .then(result => {
     t.is(result.test, undefined);
     t.true(result['test-foo-bar'] === 'baz');
+    t.true(result['test-foo-bazz'] === null);
   });
 });
