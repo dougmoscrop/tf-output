@@ -62,7 +62,7 @@ test('rejects when command returns non-zero', t => {
     })
     .catch(err => {
       t.true(on.withArgs('exit', sinon.match.any).calledOnce);
-      t.deepEqual(err.message, 'a --b c exited with non-zero status code');
+      t.deepEqual(err.message, 'a exited with non-zero status code');
     });
 });
 
@@ -89,6 +89,6 @@ test('handles quotes', t => {
     })
     .catch(err => {
       t.true(on.withArgs('exit', sinon.match.any).calledOnce);
-      t.deepEqual(err.message, `a --b 'c d' exited with non-zero status code`);
+      t.deepEqual(err.message, `a exited with non-zero status code`);
     });
 });
