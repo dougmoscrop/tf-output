@@ -10,7 +10,6 @@
     "test": "nyc --all ava",
     "posttest": "eslint .",
     "coverage": "nyc report --reporter=lcov",
-    "preversion": "update-contrib",
     "postpublish": "git push --tags"
   },
   "author": "Doug Moscrop",
@@ -32,8 +31,7 @@
     "eslint": "^8.21.0",
     "nyc": "^15.1.0",
     "proxyquire": "^2.0.1",
-    "sinon": "^14.0.0",
-    "update-contributors": "^0.3.1"
+    "sinon": "^14.0.0"
   },
   "dependencies": {
     "yargs": "^15.0.2"
