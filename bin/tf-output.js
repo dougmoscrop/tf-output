@@ -20,7 +20,7 @@ Promise.all(options.dirs.map(dir => getOutputs(dir, options)))
   .then(results => Object.assign({}, ...results))
   .then(outputs => {
     if (options.commandArgv && options.commandArgv.length) {
-      return runCommand(options.commandArgv, { test: 'value' });
+      return runCommand(options.commandArgv, outputs);
     } else {
       return printOutputs(outputs, options);
     }
